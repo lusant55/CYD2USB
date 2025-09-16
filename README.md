@@ -26,7 +26,7 @@ Ter em atenção ao pinout do CYD pois há muitas variantes. Neste caso, o displ
 ## Utilização
 Tudo que está escrito em amarelo faz alguma coisa ... experimentem ...
 
-Já faz muitos anos que não mexia no C, por isso não esperem ver código perfeito. 
+Já faz muitos anos que não mexia no C, por isso não esperem ver código perfeito ... até porque a maior parte foi a IA que fez ... 
 
 
 
