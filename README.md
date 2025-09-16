@@ -15,10 +15,12 @@ Ter em atenção ao pinout do CYD pois há muitas variantes. Neste caso, o displ
   No écran principal estão visíveis os respectivos valores obtidos do sensor DHT11. Os valores são actualizados a cada 2 minutos.
 
 - Datalogger
+  
   Permite guardar os dados da temperatura e da humidade num sdcard, numa estrutura de directorias a partir da raíz (exemplo 2025\09\20250916.txt).
   Podem ser visualizados gráficos diários da evolução das variáveis.
 
 - Alarmes
+  
   Permite definir até 5 alarmes, por hora, por data/hora e semanais, num ou mais dias da semana.
 
 ## Utilização
