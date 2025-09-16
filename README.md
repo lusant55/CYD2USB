@@ -6,10 +6,12 @@ Ter em atenção ao pinout do CYD pois há muitas variantes. Neste caso, o displ
 
 ## Funcionalidades
 - Calendário perpétuo
+  
   Tem um calendário perpétuo onde se pode escolher um ano e um mês, sendo também marcados os feriados fixos e móveis (os que dependem da data da Páscoa).
   É visivel a hora corrente, a qual pode ser acertada manualmeente ou sincronizada por NTP.
 
 - Indicação de temperatura e humidade
+  
   No écran principal estão visíveis os respectivos valores obtidos do sensor DHT11. Os valores são actualizados a cada 2 minutos.
 
 - Datalogger
