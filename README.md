@@ -8,7 +8,7 @@ Ter em atenção ao pinout do CYD pois há muitas variantes. Neste caso, o displ
 - Calendário perpétuo
   
   Tem um calendário perpétuo onde se pode escolher um ano e um mês, sendo também marcados os feriados fixos e móveis (os que dependem da data da Páscoa).
-  É visivel a hora corrente, a qual pode ser acertada manualmeente ou sincronizada por NTP.
+  É visivel a hora corrente, a qual pode ser acertada manualmente ou sincronizada por NTP.
 
 - Indicação de temperatura e humidade
   
