@@ -138,14 +138,15 @@ void drawField(Field &f) {
 void drawScreen() {
   tft.fillScreen(TFT_BLACK);
   tft.setTextSize(2);
+  tft.fillRect(0, 0, 320, 28, TFT_BLUE);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
-
+  tft.drawString("Adjust date/time", 75, 6);
   digitCount = 0;
   for (int i = 0; i < 5; ++i) drawField(fields[i]);
 
   // OK movido para a direita (+100) e para cima (-100) como pediste
   // aqui: x=220, y=100 (largura 100, altura 40)
-  tft.fillRect(220, 100, 100, 40, TFT_BLUE);
+  tft.fillRect(220, 100, 75, 40, TFT_BLUE);
   tft.setTextColor(TFT_WHITE, TFT_BLUE);
   tft.drawString("OK", 245, 110);
 }

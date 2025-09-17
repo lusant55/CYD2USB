@@ -168,7 +168,8 @@ void desenharCalendario(int mes, int ano) {
   tft.setTextDatum(TL_DATUM);
   // grafico e alarmes
   // tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-  if (sdcardAvailable) {
+  //if (sdcardAvailable) 
+  {
     tft.drawString("Graph", 0, 193);
   }
   tft.drawString("Alarm", 260, 193);
@@ -252,7 +253,22 @@ void DisplayTime(void) {
   int iSec = timeinfo.tm_sec;
 
 
-  if ((iSec != lastSecond) || changeall == 1) {
+  if ((iSec != lastSecond) || changeall == 1) 
+  {
+  
+
+    if (timeinfo.tm_mday != diaAtual) 
+      {
+        changeall = 1;
+        mesAtual = timeinfo.tm_mon;
+        anoAtual = timeinfo.tm_year + 1900;
+        diaAtual = timeinfo.tm_mday;
+        prepararFeriadosMes(anoAtual, mesAtual);
+        desenharCalendario(mesAtual, anoAtual);
+      }
+
+  
+  
     lastSecond = iSec;
 
 
@@ -277,13 +293,6 @@ void DisplayTime(void) {
 
     // Guarda hora atual para próxima comparação
     strcpy(szOldTime, szTime);
-    if (timeinfo.tm_mday != diaAtual) {
-      mesAtual = timeinfo.tm_mon;
-      anoAtual = timeinfo.tm_year + 1900;
-      diaAtual = timeinfo.tm_mday;
-      prepararFeriadosMes(anoAtual, mesAtual);
-      desenharCalendario(mesAtual, anoAtual);
-    }
   }
 }
 
