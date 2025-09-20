@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include "auxtime.h"
-
+ 
 
 // =====================================================
 // Lógica do calendário

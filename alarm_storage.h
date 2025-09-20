@@ -4,3 +4,4 @@
 
 void alarmsLoad();   // ler da Flash
 void alarmsSave();   // gravar na Flash
+ 

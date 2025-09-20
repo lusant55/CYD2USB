@@ -5,7 +5,7 @@
 #include <time.h>
 #include <sys/time.h>
 //#include "sd_card.h"
-
+ 
 #define CS_PIN 5   // CS do SD Card (ajuste conforme o seu hardware)
 
 // // ---- Config WiFi ----

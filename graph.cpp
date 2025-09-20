@@ -17,6 +17,29 @@ float fmap(float x, float in_min, float in_max, float out_min, float out_max) {
          (in_max - in_min) + out_min;
 }
 
+float getMax (float temp, float tmax, int * hmaxt, int * mmaxt, int hh, int min)
+  {
+    if (temp > tmax)
+      {
+        *hmaxt= hh;
+        *mmaxt= min;
+        return temp;
+      }
+    return tmax;
+  }
+
+float getMin (float temp, float tmin, int * hmint, int * mmint, int hh, int min)
+  {
+    if (temp < tmin)
+      {
+        *hmint= hh;
+        *mmint= min;
+        return temp;
+      }
+    return tmin;
+  }
+
+
 void drawDayGraph(int year, int month, int day) 
   {
     // Caminho: /2025/09/20250913.txt
@@ -24,6 +47,8 @@ void drawDayGraph(int year, int month, int day)
     int hmaxt,hmint,mmint,mmaxt, hmaxh,hminh, mmaxh,mminh;
     float tmin= 100, tmax= 0, hmin= 100, hmax= 0;
     int escmaxt= 40, escmint= 0, escmaxh= 100, escminh= 0;
+ 
+    //int lastpointtime= 0;
 
 
             // Margens do gráfico
@@ -64,31 +89,14 @@ void drawDayGraph(int year, int month, int day)
                   temps[pointCount] = temp;
                   hums[pointCount]  = hum;
                   minutesOfDay[pointCount] = hh * 60 + min;  // 0..1439
+                  //Serial.printf("pointtime %d lastpointtime %d difftime %d\n", minutesOfDay[pointCount], lastpointtime, minutesOfDay[pointCount]- lastpointtime);
+                  //Serial.printf("pointCount %d\n", minutesOfDay[pointCount]);
+                  //lastpointtime= minutesOfDay[pointCount];
                   pointCount++;
-                  if (temp > tmax)
-                    {
-                      tmax= temp;
-                      hmaxt= hh;
-                      mmaxt= min;
-                    }
-                  if (temp < tmin)
-                    {
-                      tmin= temp;
-                      hmint= hh;
-                      mmint= min;
-                    }
-                  if (hum > hmax)
-                    {
-                      hmax= hum;
-                      hmaxh= hh;
-                      mmaxh= min;
-                    }
-                  if (hum < hmin)
-                    {
-                      hmin= hum;
-                      hminh= hh;
-                      mminh= min;
-                    }                
+                  tmax= getMax (temp, tmax, &hmaxt, &mmaxt, hh, min);
+                  tmin= getMin (temp, tmin, &hmint, &mmint, hh, min);
+                  hmax= getMax (hum, hmax, &hmaxh, &mmaxh, hh, min);
+                  hmin= getMin (hum, hmin, &hminh, &mminh, hh, min);
               }
           }
           f.close();
@@ -123,15 +131,16 @@ void drawDayGraph(int year, int month, int day)
           //Serial.printf("Pointcount %d\n", pointCount);
           //Serial.println("passei");
             // ---- Curva Temperatura ----
+            //lastpointtime= minutesOfDay[0];
             for (int i = 1; i < pointCount; i++) {
                 int x1 = map(minutesOfDay[i-1], 0, 24*60, x0, x0 + w);
                 int y1 = map(temps[i-1], escmint, escmaxt, y0, y0 - h);
                 int x2 = map(minutesOfDay[i],   0, 24*60, x0, x0 + w);
                 int y2 = map(temps[i],   escmint, escmaxt, y0, y0 - h);
-                tft.drawLine(x1, y1, x2, y2, TFT_RED);
-                
-                // if (i < 20)
-                // Serial.printf("x1 %d x2 %d y1 %d y2 %d\n", x1, x2 , y1, y2);
+                if (minutesOfDay[i] - minutesOfDay[i-1] > 5)
+                  tft.drawLine(x1, y1, x2, y2, TFT_BLACK);
+                else
+                  tft.drawLine(x1, y1, x2, y2, TFT_RED);
             }
 
             // ---- Curva Humidade ----
@@ -140,7 +149,10 @@ void drawDayGraph(int year, int month, int day)
                 int y1 = map(hums[i-1], escminh, escmaxh, y0, y0 - h);
                 int x2 = map(minutesOfDay[i],   0, 24*60, x0, x0 + w);
                 int y2 = map(hums[i],   escminh, escmaxh, y0, y0 - h);
-                tft.drawLine(x1, y1, x2, y2, TFT_BLUE);                
+                if (minutesOfDay[i] - minutesOfDay[i-1] > 5)
+                  tft.drawLine(x1, y1, x2, y2, TFT_BLACK);
+                else
+                  tft.drawLine(x1, y1, x2, y2, TFT_BLUE);
             }
 
             Serial.printf("Plotados %d pontos\n", pointCount);

@@ -2,7 +2,7 @@
 #define FERIADOS
 
 typedef struct {
-  int dia;          // 1..31
+  int dia;          // 1..31 
   const char *sigla; // "F", "P", "E", "N"
 } Feriado;
 

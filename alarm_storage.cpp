@@ -1,6 +1,6 @@
 #include "alarm_storage.h"
 #include <Preferences.h>
-
+ 
 extern Alarm alarms[MAX_ALARMS];
 
 #define PREF_NAMESPACE "ALARMS_NVS"

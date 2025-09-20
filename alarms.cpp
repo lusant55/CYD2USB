@@ -196,7 +196,7 @@ static void redrawAlarmLine(int i) {
   tft.setTextColor(alarms[i].active?TFT_GREEN:TFT_RED,i==selectedAlarm?TFT_YELLOW:TFT_BLACK);
   tft.print("X");
 }
-
+ 
 static void buildAndDrawUI() {
   zoneCount=0;
   tft.fillScreen(TFT_BLACK);
@@ -364,8 +364,8 @@ bool alarmsCheckAndBuzz(int year, int month, int day, int hour, int minute, int 
         // Caso 1: data completa (ano, mês, dia)
         if (a.year != 0 && a.month != 0 && a.day != 0) 
           {
-                Serial.print("Alarmes com data ");
-                Serial.println(i);
+                //Serial.print("Alarmes com data ");
+                //Serial.println(i);
 
             if (a.year == year && a.month == month && a.day == day && a.hour == hour && a.minute == minute) 
               {

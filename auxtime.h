@@ -1,7 +1,7 @@
 #ifndef AUXTIME
 #define AUXTIME
 
-
+ 
 
 // =====================================================
 // Lógica do calendário

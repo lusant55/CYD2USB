@@ -150,7 +150,7 @@ void drawScreen() {
   tft.setTextColor(TFT_WHITE, TFT_BLUE);
   tft.drawString("OK", 245, 110);
 }
-
+ 
 // aplica incremento no dígito tocado, usando incrementDigitField
 void adjustDigit(DigitArea &d) {
   int value, minValue, maxValue, width;

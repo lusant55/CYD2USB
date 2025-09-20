@@ -18,6 +18,9 @@
 #include "alarms.h"
 #include "alarm_storage.h"
 
+#define TFT_BLL 21
+  static int modoescuro= 0;
+
 
 #define CS_SD 5  // no CYD2USB normalmente é o GPIO5
 File root;
@@ -121,7 +124,7 @@ bool touchGetPoint(int &x, int &y) {
   //Serial.printf("rawX: %d\n", rawX);
   //Serial.printf("rawY: %d\n", rawY);
 
-  // valida faixa
+  // valida faixa 
   if (rawX < 100 || rawX > 4000 || rawY < 100 || rawY > 4000) {
     return false;
   }
@@ -252,11 +255,8 @@ void DisplayTime(void) {
   // Extrai o segundo para controlo do update
   int iSec = timeinfo.tm_sec;
 
-
   if ((iSec != lastSecond) || changeall == 1) 
   {
-  
-
     if (timeinfo.tm_mday != diaAtual) 
       {
         changeall = 1;
@@ -309,7 +309,12 @@ void setup() {
   Serial.begin(115200);
   Serial.println("=== Calendário com Touch (IRQ) ===");
 
-
+  pinMode(4, OUTPUT);
+  pinMode(16, OUTPUT);
+  pinMode(17, OUTPUT);
+  digitalWrite(4, HIGH);
+  digitalWrite(16, HIGH);
+  digitalWrite(17, HIGH);
   // touch
   pinMode(T_CLK, OUTPUT);
   pinMode(T_CS, OUTPUT);
@@ -317,10 +322,14 @@ void setup() {
   pinMode(T_DO, INPUT);
   pinMode(T_IRQ, INPUT);
   digitalWrite(T_CS, HIGH);
+
+  
   // display
   tft.init();
   tft.setRotation(1);
   tft.fillScreen(TFT_BLACK);
+  // pinMode(TFT_BLL, OUTPUT);
+  // digitalWrite(TFT_BLL, HIGH);
 
   while (1) {
     tft.fillScreen(TFT_BLACK);
@@ -507,7 +516,7 @@ int decodeTouch(int tx, int ty, int state) {
         return gincrementWeek;
       if (tx > 266 && tx < 279 && ty > 10 && ty < 22)  // >>>
         return gincrementMonth;
-      if (tx > 289 && tx < 320 && ty > 0 && ty < 6)  // X
+      if (tx > 280 && tx < 320 && ty > 0 && ty < 10)  // X
         return geXit;
     case alarmState:
     case alarmState1: return altouch;
@@ -520,20 +529,23 @@ int decodeTouch(int tx, int ty, int state) {
 
 
 
-void showTempHum(void) {
+void showTempHum(void) 
+  {
     float humidity = dht.readHumidity();        // Read temperature
-    float temperature = dht.readTemperature();  // Read humidity
+    float temperature= dht.readTemperature();  // Read humidity
     if (isnan(humidity) || isnan(temperature))  // If error
-    {
-      Serial.println("Failed to read from DHT11");
-    } else {
-      String tem = "Temp " + String(temperature) + "C";
-      String hum = "Hum " + String(humidity) + "%";
-      tft.drawString(tem, 20, 220);
-      tft.drawString(hum, 180, 220);
-    }
+      {
+        Serial.println("Failed to read from DHT11");
+      } 
+    else 
+      {
+        String tem = "Temp " + String(temperature) + "C";
+        String hum = "Hum " + String(humidity) + "%";
+        tft.drawString(tem, 20, 220);
+        tft.drawString(hum, 180, 220);
+      }
   
-}
+  }
 
 
 
@@ -548,10 +560,16 @@ void loop() {
   static bool buzzerON= false;
   static bool alarmON= false;
   static int old_sec= -1;
+  static long int runningtime= millis();
 
-
-  if (touchGetPoint(tx, ty)) {
+  if (touchGetPoint(tx, ty)) 
+  {
+    //Serial.println("passou 5s");
     changeall = 1;
+    runningtime= millis();  
+    digitalWrite (TFT_BLL, 1);
+    modoescuro= 0;
+
 
     switch (touch = decodeTouch(tx, ty, state)) {
       case decrementYear:
@@ -638,6 +656,7 @@ void loop() {
         prepararFeriadosMes(anoAtual, mesAtual);
         desenharCalendario(mesAtual, anoAtual);
       }
+      //getLocalTime(&timeinfo);
       DisplayTime();
       if (((timeinfo.tm_min % 2) && (timeinfo.tm_min != old_min1))|| (changeall == 1)) {
         old_min1= timeinfo.tm_min;
@@ -674,6 +693,7 @@ void loop() {
     old_min2= timeinfo.tm_min;
     if (alarmsCheckAndBuzz(timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday, timeinfo.tm_hour, timeinfo.tm_min, (timeinfo.tm_wday + 6) % 7))  
       alarmON= true;
+      //digitalWrite (TFT_BLL, 1);
   }
 
   if (alarmON && timeinfo.tm_sec != old_sec)
@@ -690,6 +710,11 @@ void loop() {
           buzzerON= true;
         }
     }
+  // if (timeinfo.tm_sec != old_sec)
+  //   {
+  //     Serial.print(digitalRead(21));
+  //     old_sec= timeinfo.tm_sec;
+  //   }
 
 
 
@@ -699,7 +724,7 @@ void loop() {
   if (((timeinfo.tm_min % 5) == 0) && (timeinfo.tm_min != old_min) && sdcardAvailable) {
     old_min = timeinfo.tm_min;
     float humidity = dht.readHumidity();        // Read temperature
-    float temperature = dht.readTemperature();  // Read humidity
+    float temperature= dht.readTemperature();  // Read humidity
     if (isnan(humidity) || isnan(temperature))  // If error
     {
       Serial.println("Failed to read from DHT11");
@@ -708,6 +733,23 @@ void loop() {
         ;
     }
   }
+long int mils= millis();
+char num[20];
+  if (mils - runningtime > 1000 * 60 * 2)
+    {
+      // Serial.println("");
+      // sprintf (num, "%ld ",mils);
+      // Serial.print(mils);
+      // sprintf (num, " %ld ",runningtime);
+      // Serial.print(num);
+      // sprintf (num, " %ld ",mils - runningtime);
+      // Serial.println(num);
+      runningtime= millis();
+      digitalWrite (TFT_BLL, 0);
+      modoescuro= 1;
+
+
+    }
 
   //changeall = 0;
   delay(200);
