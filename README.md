@@ -1,6 +1,6 @@
 # CYD2USB -Cheap Yellow Display com 2 portas USB
 <p align="center">
-  <img src="fotos/bas.jpg" alt="Minha imagem" width="320" height="200"/>
+  <img src="fotos/base.jpg" alt="Minha imagem" width="320" height="200"/>
 </p>
 ## Hardware
 Usa o CYD2USB com o display ST7789, leitor de cartões, um sensor DHT11 (quanto a mim pouco preciso) e a saída de aúdio para ligar um altifalante (um de 4 ou 8 Ohm com uma resistência de 100 Ohm em série).
