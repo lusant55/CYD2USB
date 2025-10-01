@@ -1,6 +1,6 @@
 # CYD2USB -Cheap Yellow Display com 2 portas USB
 <p align="center">
-  <img src="fotos/base.jpg" alt="Minha imagem" width="320" height="200"/>
+  <img src="fotos/base.jpg" alt="Minha imagem" width="320" />
 </p>
 
 ## Hardware
